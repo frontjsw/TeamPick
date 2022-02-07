@@ -89,17 +89,6 @@ video {
   vertical-align: baseline;
 }
 
-html {
-  font-size: 62.5%;
-  line-height: 1.15;
-  -webkit-text-size-adjust: 100%;
-}
-
-a {
-  text-decoration: none;
-  color: black;
-}
-
 /* HTML5 display-role reset for older browsers */
 article,
 aside,
@@ -142,8 +131,4 @@ q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
-}
-
-* {
-  box-sizing: border-box;
 }

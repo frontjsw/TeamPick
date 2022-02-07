@@ -2,7 +2,9 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { loginSchema } from "../components/Schema";
+
+import { useLogin } from "../hooks/user-api";
+import { loginSchema } from "../utils/form-schemas";
 
 const Login = () => {
   const {
@@ -13,25 +15,33 @@ const Login = () => {
     resolver: yupResolver(loginSchema),
   });
 
-  const onValid = (data) => {
-    console.log(data);
+  const { mutate } = useLogin();
+
+  const submitHandler = (formData) => {
+    mutate(formData);
   };
 
   return (
     <Wrapper>
       <Header>로그인</Header>
-      <Form onSubmit={handleSubmit(onValid)}>
+      <Form onSubmit={handleSubmit(submitHandler)}>
         <InputBox>
-          <input {...register("username")} type="text" placeholder="username" />
-          <p>{errors.username?.message}</p>
+          <input
+            {...register("username")}
+            className="register-input"
+            type="text"
+            placeholder="username"
+          />
+          <p className="register-error">{errors.username?.message}</p>
         </InputBox>
         <InputBox>
           <input
             {...register("password")}
+            className="register-input"
             type="password"
             placeholder="password"
           />
-          <p>{errors.password?.message}</p>
+          <p className="register-error">{errors.password?.message}</p>
         </InputBox>
         <button>Login</button>
       </Form>
@@ -54,6 +64,9 @@ const Wrapper = styled.div`
 `;
 
 const Header = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 50px;
   background-color: #5eaca0;
@@ -62,7 +75,6 @@ const Header = styled.div`
   color: #fff;
   font-weight: 700;
   font-size: 24px;
-  text-align: center;
   line-height: 30px;
   padding: 10px 0;
 `;
@@ -104,8 +116,19 @@ const Form = styled.form`
 `;
 
 const InputBox = styled.div`
-  height: 65px;
-  padding: 15px 0;
+  margin-bottom: 2.5rem;
+
+  .register-error {
+    font-size: 1.45rem;
+    line-height: 1.8rem;
+    margin-top: 0.8rem;
+    color: #e75349;
+  }
+
+  .register-input:focus {
+    outline: none;
+    background: #e7e7fc;
+  }
 `;
 const Register = styled.div`
   text-align: center;
