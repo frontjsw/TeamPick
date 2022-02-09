@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useLogin } from "../hooks/user-api";
 import { loginSchema } from "../utils/form-schemas";
+import GoogleButton from "../components/GoogleButton";
 
 const Login = () => {
   const {
@@ -43,7 +44,8 @@ const Login = () => {
           />
           <p className="register-error">{errors.password?.message}</p>
         </InputBox>
-        <button>Login</button>
+        <button className="login-button">Login</button>
+        {/* <GoogleButton /> */}
       </Form>
       <Register>
         계정이 없으신가요?
@@ -94,7 +96,7 @@ const Form = styled.form`
     color: red;
     line-height: 20px;
   }
-  button {
+  .login-button {
     width: 30%;
     max-width: 100px;
     margin: 5px auto 0 auto;

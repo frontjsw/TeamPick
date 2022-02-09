@@ -1,37 +1,48 @@
 import React from "react";
-import GoogleLogin from "react-google-login";
+import { GoogleLogin } from "react-google-login";
+import axios from "axios";
+import styled from "styled-components";
 
-const clientId = "OAuth Web Client ID";
+const clientId = process.env.REACT_APP_GOOGLE_OAUTH2_CLIENT_ID;
 
-export default function GoogleButton({ onSocial }) {
-  const onSuccess = async (response) => {
-    console.log(response);
-
-    const {
-      googleId,
-      profileObj: { email, name },
-    } = response;
-
-    await onSocial({
-      socialId: googleId,
-      socialType: "google",
-      email,
-      nickname: name,
-    });
-  };
-
+const GoogleButton = () => {
   const onFailure = (error) => {
     console.log(error);
   };
 
+  const onSuccess = async (response) => {
+    console.log(response); // response에서 데이터 뽑아와서 send?
+
+    const data = await axios.post("/oauth/jwt/google", response);
+    console.log(data);
+  };
+
   return (
-    <div>
+    <Wrapper>
       <GoogleLogin
         clientId={clientId}
-        responseType={"id_token"}
+        // render={(renderProps) => (
+        //   <button onClick={renderProps.onClick} disabled={renderProps.disabled}>
+        //     구글 계정으로 로그인 하기
+        //   </button>
+        // )}
         onSuccess={onSuccess}
         onFailure={onFailure}
+        cookiePolicy={"single_host_origin"}
+        className="google-login"
       />
-    </div>
+    </Wrapper>
   );
-}
+};
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+
+  button {
+    width: 70%;
+  }
+`;
+
+export default GoogleButton;
